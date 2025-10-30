@@ -1,0 +1,39 @@
+{
+  "name": "@illusionfield/mtest",
+  "version": "0.5.0",
+  "description": "Prebuilt binary distribution of the Go-based Meteor TinyTest runner.",
+  "type": "module",
+  "bin": {
+    "mtest": "bin/mtest.js"
+  },
+  "scripts": {
+    "postinstall": "node ./scripts/postinstall.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "extract-zip": "^2.0.1",
+    "tar": "^6.2.0"
+  },
+  "files": [
+    "bin",
+    "scripts",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/illusionfield/mtest.git"
+  },
+  "author": "Jozsef Hoffmann <illusionfield@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "meteor",
+    "testing",
+    "mtest",
+    "cli",
+    "binary"
+  ]
+}

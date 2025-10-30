@@ -56,7 +56,7 @@ make ci
 make build
 
 # 3. Execute the test runner
-./bin/mtest --package <package-name>
+./bin/mtest --package <package-path-or-name> --once
 ```
 
 Need a quick smoke test? A tiny Meteor package lives at `test/dummy`. Point the CLI at it to validate your setup after building:
@@ -70,6 +70,30 @@ or run directly:
 ```bash
 ./bin/mtest --package ./test/dummy --once
 ```
+
+### npm-friendly installation
+
+```bash
+npm install --save-dev @illusionfield/mtest
+npx mtest --package <package-path-or-name> --once
+```
+
+or globally:
+
+```bash
+npm install --global @illusionfield/mtest
+mtest --package <package-path-or-name> --once
+```
+
+The installer pulls the latest GitHub release from `illusionfield/mtest`, inspects the published assets, and picks the bundle that best matches your OS/arch (e.g. `mtest-{tag}-{GOOS}-{GOARCH}.zip`). Pin a specific release with either `npm install --save-dev @illusionfield/mtest --mtest-version=v1.2.3` or `MTEST_DIST_VERSION=v1.2.3 npm install`. Further controls:
+
+- `MTEST_DIST_BASE_URL` – point at a custom artefact host (supports `{tag}` / `{version}` placeholders).
+- `MTEST_DIST_ASSET_PREFIX` – override the asset basename (same placeholders supported).
+- `MTEST_DIST_ASSET` – fetch a single explicit filename.
+- `MTEST_DIST_REPO` – target another GitHub repository for releases.
+- `MTEST_DIST_GITHUB_TOKEN` – provide a token if the GitHub API rate-limit is hit.
+
+When developing locally you can bypass downloads entirely via `MTEST_SKIP_BINARY_INSTALL=true`.
 
 ### Makefile Targets
 
@@ -105,7 +129,7 @@ Common options:
 | `--inspect` | | bool | Passes `--inspect` to Meteor for live debugging. |
 | `--inspect-brk` | | bool | Passes `--inspect-brk` to Meteor (breaks on first line). |
 | `--port` | | int | Force a specific port (defaults to an auto-picked free port 10000-11999). |
-| `--verbose` | `-v` | string | Increase logging level (`-v`→debug, `-vv`→trace, `--verbose=info|3`, etc.). |
+| `--verbose` | `-v` | string | Increase logging level (`-v`→debug, `-vv`→trace, `--verbose=info or --verbose=3`, etc.). |
 | `--version` | `-V` | bool | Print semantic version/commit info and exit. |
 
 ---

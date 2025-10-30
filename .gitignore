@@ -56,15 +56,16 @@ $RECYCLE.BIN/
 .tmp
 
 # ----------------------------------------
+# Project specific files (Node.js)
+# ----------------------------------------
+meteor/
+.build*
+.npm
+.meteor
+
+# ----------------------------------------
 # Project specific files (Golang)
 # ----------------------------------------
-
-## Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
 
 ## Test binary, built with `go test -c`
 *.test
@@ -77,4 +78,15 @@ $RECYCLE.BIN/
 
 go.work
 go.work.sum
+
+## Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
 /bin
+/npm/node_modules/
+/npm/bin/runtime/*
+!/npm/bin/runtime/.gitignore
