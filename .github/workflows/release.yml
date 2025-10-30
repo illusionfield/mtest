@@ -71,7 +71,7 @@ jobs:
         run: |
           mkdir -p dist
           BIN="mtest${EXT}"
-          go build -trimpath -ldflags "-s -w -X main.Version=${VERSION} -X main.Commit=${COMMIT}" -o "${BIN}"
+          go build -trimpath -ldflags "-s -w -X main.Version=${VERSION} -X main.Commit=${COMMIT}" -o "${BIN}" ./cmd/mtest
           ARCHIVE="dist/mtest_${GOOS}_${GOARCH}"
           if [ "${GOOS}" = "windows" ]; then
             ARCHIVE="${ARCHIVE}.zip"
