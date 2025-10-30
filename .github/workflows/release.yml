@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     name: Build ${{ matrix.goos }}-${{ matrix.goarch }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
@@ -54,8 +54,11 @@ jobs:
             release-${{ matrix.goos }}-${{ matrix.goarch }}-
             release-
 
+      - name: Lint
+        run: make lint
+
       - name: Run tests
-        run: go test ./...
+        run: make test
 
       - name: Build binary
         env:
@@ -88,7 +91,7 @@ jobs:
   release:
     name: Publish Release
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
 

@@ -8,8 +8,8 @@ Running the package tests:
 meteor test-packages ./test/dummy
 ```
 
-or with the Go binary:
+or with the Go binary built via `make build`:
 
 ```bash
-./mtest --package mtest:dummy --once
+./bin/mtest --package ./test/dummy --once
 ```

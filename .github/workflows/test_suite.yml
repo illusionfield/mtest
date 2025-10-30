@@ -24,9 +24,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             go-version: "1.24"
-          - os: macos-latest
+          - os: macos-15
             go-version: "1.25"
 
     steps:
@@ -50,14 +50,21 @@ jobs:
             ${{ runner.os }}-go-${{ matrix.go-version }}-
             ${{ runner.os }}-go-
 
-      - name: Go fmt check
-        run: test -z "$(gofmt -l .)"
+      - name: Install Meteor (Linux)
+        if: matrix.os == 'ubuntu-24.04'
+        run: |
+          curl https://install.meteor.com/ | sh
+          echo "$HOME/.meteor" >> "$GITHUB_PATH"
 
-      - name: Go vet
-        run: go vet ./...
+      - name: Lint
+        run: make lint
 
-      - name: Tests
-        run: go test ./...
+      - name: Unit tests
+        run: make test
 
-      - name: Build
-        run: go build ./...
+      - name: Build CLI
+        run: make build
+
+      - name: Functional test (dummy package)
+        if: matrix.os == 'ubuntu-24.04'
+        run: make integration

@@ -49,25 +49,48 @@
 ## Quick Start
 
 ```bash
-# 1. Build the binary
-go build
+# 1. Validate code style + unit tests via the Makefile helpers
+make ci
 
-# 2. Run tests for a package
-./mtest --package <package name>
+# 2. Build the CLI (outputs ./bin/mtest)
+make build
+
+# 3. Execute the test runner
+./bin/mtest --package <package-name>
 ```
 
-Need a quick smoke test? A tiny Meteor package lives at `test/dummy`. Point the CLI at it to validate your setup:
+Need a quick smoke test? A tiny Meteor package lives at `test/dummy`. Point the CLI at it to validate your setup after building:
 
 ```bash
-./mtest --package ./test/dummy --once
+make integration
 ```
+
+or run directly:
+
+```bash
+./bin/mtest --package ./test/dummy --once
+```
+
+### Makefile Targets
+
+| Target | What it does |
+| ------ | ------------- |
+| `make ci` | Runs `fmt-check`, `go vet`, and unit tests to mirror the default CI suite. |
+| `make build` | Compiles the CLI into `./bin/mtest` (respects `BIN_DIR`/`BIN_NAME`). |
+| `make integration` | Executes the dummy Meteor package smoke test (`INTEGRATION_PACKAGE`/`INTEGRATION_FLAGS` configurable). |
+| `make fmt` / `make fmt-check` | Formats Go sources in place or verifies formatting without writing. |
+| `make lint` | Runs formatting verification plus `go vet` static analysis. |
+| `make coverage` | Produces `coverage.out` via `go test -coverprofile`. |
+| `make tidy` / `make deps` | Keeps module metadata tidy or prefetches dependencies. |
+| `make clean` | Drops build artefacts, coverage data, and Go build caches. |
+| `make install` | Installs the CLI into `$(go env GOPATH)/bin` for use in your PATH. |
 
 Common options:
 
 - `--once` – exit after the first run (perfect for CI)
 - `--release <version>` – pin a specific Meteor release
 - `--test-app-path <path>` – point at a custom test harness
-- `-v`, `-vv`, `-vvv` – raise verbosity up to debug
+- `-v`, `-vv` – step logging to debug/trace (or use `--verbose=<0-5|info|debug|trace>`)
 
 ---
 
@@ -82,7 +105,7 @@ Common options:
 | `--inspect` | | bool | Passes `--inspect` to Meteor for live debugging. |
 | `--inspect-brk` | | bool | Passes `--inspect-brk` to Meteor (breaks on first line). |
 | `--port` | | int | Force a specific port (defaults to an auto-picked free port 10000-11999). |
-| `--verbose` | `-v` | count | Increase logging level (repeat flag or use `--verbose=N`). |
+| `--verbose` | `-v` | string | Increase logging level (`-v`→debug, `-vv`→trace, `--verbose=info|3`, etc.). |
 | `--version` | `-V` | bool | Print semantic version/commit info and exit. |
 
 ---
@@ -110,7 +133,7 @@ Common options:
 
 | Capability | `@zodern/mtest` (Node) | `mtest` (Go) |
 | ---------- | --------------------- | ------------ |
-| CLI flags | ✔ identical flag set | ✔ |
+| CLI flags | ✔ identical flag set | ✔ (see `cmd/mtest`) |
 | Auto port selection | via `get-port` | via native TCP probing |
 | Puppeteer driven | ✔ | ➜ Rod-powered |
 | Stream test console | ✔ | ✔ (sentinel filtered) |
@@ -146,7 +169,7 @@ Have ideas? Open an issue and join the discussion.
 ## Contributing
 
 1. Fork and clone this repository.
-2. `go fmt ./...` and `go test ./...` before proposing changes.
+2. Run `make fmt` (or `make fmt-check`) and `make ci` before proposing changes.
 3. Describe behavioural impacts clearly in your PR — backwards compatibility is a priority.
 
 ---

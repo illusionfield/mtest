@@ -77,5 +77,4 @@ $RECYCLE.BIN/
 
 go.work
 go.work.sum
-.bin
-mtest
+/bin
