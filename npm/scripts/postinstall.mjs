@@ -10,6 +10,42 @@ import crypto from 'node:crypto';
 import tar from 'tar';
 import extractZip from 'extract-zip';
 
+const fetch = await resolveFetch();
+
+/**
+ * Resolve a fetch implementation that works on the current Node.js runtime.
+ * Prefers the built-in global fetch when present (Node.js >= 18),
+ * otherwise falls back to node-fetch for older runtimes.
+ * @returns {Promise<typeof globalThis.fetch>}
+ */
+async function resolveFetch() {
+  if (typeof globalThis.fetch === 'function') {
+    return globalThis.fetch.bind(globalThis);
+  }
+  let nodeFetchModule;
+  try {
+    nodeFetchModule = await import('node-fetch');
+  } catch (error) {
+    const message =
+      'Global fetch is unavailable and the optional dependency `node-fetch` could not be loaded.';
+    throw new Error(`${message} ${error?.message ?? error}`);
+  }
+  const nodeFetch = nodeFetchModule.default ?? nodeFetchModule;
+
+  // Ensure WHATWG globals exist for downstream consumers of the Response object.
+  if (!globalThis.Headers && nodeFetchModule.Headers) {
+    globalThis.Headers = nodeFetchModule.Headers;
+  }
+  if (!globalThis.Request && nodeFetchModule.Request) {
+    globalThis.Request = nodeFetchModule.Request;
+  }
+  if (!globalThis.Response && nodeFetchModule.Response) {
+    globalThis.Response = nodeFetchModule.Response;
+  }
+
+  return nodeFetch;
+}
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(__dirname, '..');
 const runtimeDir = join(projectRoot, 'bin', 'runtime');

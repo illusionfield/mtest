@@ -1,6 +1,6 @@
 {
   "name": "@illusionfield/mtest",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Prebuilt binary distribution of the Go-based Meteor TinyTest runner.",
   "type": "module",
   "bin": {
@@ -11,10 +11,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=14.17.0"
   },
   "dependencies": {
     "extract-zip": "^2.0.1",
+    "node-fetch": "^3.3.2",
     "tar": "^6.2.0"
   },
   "files": [
