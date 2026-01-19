@@ -3,10 +3,22 @@ name: Publish npm Wrapper
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.2.3)'
+        required: false
+        type: string
 
 jobs:
   publish:
-    if: startsWith(github.event.release.tag_name, 'v')
+    if: |
+      (github.event_name == 'release' && startsWith(github.event.release.tag_name, 'v')) ||
+      (github.event_name == 'push' && startsWith(github.ref_name, 'v')) ||
+      (github.event_name == 'workflow_dispatch' && (startsWith(inputs.tag, 'v') || startsWith(github.ref_name, 'v')))
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,7 +35,7 @@ jobs:
       - name: Set wrapper version from release tag
         working-directory: npm
         run: |
-          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${{ inputs.tag || github.event.release.tag_name || github.ref_name }}"
           VERSION="${VERSION#v}"
           npm version "$VERSION" --no-git-tag-version
 
