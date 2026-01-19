@@ -8,7 +8,7 @@
   },
   "scripts": {
     "postinstall": "node ./scripts/postinstall.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./scripts/selftest.mjs"
   },
   "engines": {
     "node": ">=14.17.0"

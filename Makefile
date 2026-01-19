@@ -36,6 +36,10 @@ install: ## Install the CLI into GOPATH/bin
 test: ## Run unit tests
 	$(GO) test ./...
 
+.PHONY: npm-test
+npm-test: ## Run npm wrapper tests
+	cd npm && npm test
+
 .PHONY: coverage
 coverage: ## Generate coverage profile at $(COVERAGE_FILE)
 	$(GO) test -coverprofile="$(COVERAGE_FILE)" ./...
@@ -72,7 +76,7 @@ integration: build ## Run the functional test using the dummy Meteor package
 	./$(BIN) --package "$(INTEGRATION_PACKAGE)" $(INTEGRATION_FLAGS)
 
 .PHONY: ci
-ci: lint test ## Run the default CI suite
+ci: lint test npm-test ## Run the default CI suite
 
 .PHONY: clean
 clean: ## Remove build artifacts and cached data
