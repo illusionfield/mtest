@@ -11,6 +11,7 @@ on:
       - main
       - feature/*
       - release/*
+      - dependabot/*
 
 permissions:
   contents: read
@@ -25,7 +26,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-24.04
-            go-version: "1.24"
+            go-version: "1.25"
           - os: macos-15
             go-version: "1.25"
 
