@@ -7,7 +7,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import os from 'node:os';
 import crypto from 'node:crypto';
-import tar from 'tar';
+import { extract } from 'tar'
 import extractZip from 'extract-zip';
 
 const fetch = await resolveFetch();
@@ -346,7 +346,7 @@ async function acquireBinary({ url, destinationPath, candidate, target }) {
     await fs.mkdir(extractDir, { recursive: true });
 
     if (candidate.unpack === 'tar') {
-      await tar.extract({ file: archivePath, cwd: extractDir });
+      await extract({ file: archivePath, cwd: extractDir });
     } else if (candidate.unpack === 'zip') {
       await extractZip(archivePath, { dir: extractDir });
     } else {
