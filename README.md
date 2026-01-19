@@ -1,6 +1,6 @@
 # mtest - Modern Meteor TinyTest Orchestrator
 
-![Go Version](https://img.shields.io/badge/Go-1.24%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white)
+![Go Version](https://img.shields.io/badge/Go-1.25%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white)
 ![Rod](https://img.shields.io/badge/Rod-Automation-5333ED?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-2F855A?style=for-the-badge)
 
