@@ -49,25 +49,27 @@ jobs:
         id: should_publish
         run: |
           set -euo pipefail
-          node -e "
-          const
-            { execSync } = require('node:child_process'),
-            version      = process.env.WRAPPER_VERSION;
+          node <<'NODE' >> "$GITHUB_OUTPUT"
+          const { execSync } = require('node:child_process');
+          const version = process.env.WRAPPER_VERSION;
           let versions = [];
           try {
             const output = execSync('npm view @illusionfield/mtest versions --json', {
               stdio: ['ignore', 'pipe', 'pipe']
             }).toString();
             versions = JSON.parse(output);
-          } catch(error) {
-            if(error.status !== 1) {
+          } catch (error) {
+            if (error.status !== 1) {
               console.error(error.message);
               process.exit(1);
             }
           }
-          const published = Array.isArray(versions) ? versions.includes(version) : versions === version;
+          const published = Array.isArray(versions)
+            ? versions.includes(version)
+            : versions === version;
           const publish = published ? 'false' : 'true';
-          console.log(`publish=${publish}`);" >> "$GITHUB_OUTPUT"
+          console.log(`publish=${publish}`);
+          NODE
         env:
           WRAPPER_VERSION: ${{ steps.pkg.outputs.version }}
 
