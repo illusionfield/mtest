@@ -1,6 +1,6 @@
 {
   "name": "@illusionfield/mtest",
-  "version": "0.6.0",
+  "version": "0.0.0-develop",
   "description": "Prebuilt binary distribution of the Go-based Meteor TinyTest runner.",
   "type": "module",
   "bin": {

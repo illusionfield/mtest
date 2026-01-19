@@ -87,6 +87,7 @@ go.work.sum
 *.dylib
 
 /bin
+/npm/package-lock.json
 /npm/node_modules/
 /npm/bin/runtime/*
 !/npm/bin/runtime/.gitignore
